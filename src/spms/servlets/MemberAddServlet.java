@@ -2,6 +2,9 @@ package spms.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -35,6 +38,47 @@ public class MemberAddServlet extends HttpServlet {
 		writer.println("</form>");
 		writer.println("</body>");
 		writer.println("</html>");
+		
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
+		resp.setContentType("text/html; charset=UTF-8");
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try{
+			//request에서 getParameter 할 때 매개변수값의 인코딩을 디폴트로 ISO-8859-1로 인식하므로 UTF-8설정(하지 않으면 한글이 깨짐 발생)
+			req.setCharacterEncoding("UTF-8");
+			
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/studydb", "study", "study");
+			
+			pstmt = conn.prepareStatement("insert into members(mname, email, pwd, cre_date, mod_date) values (?,?,?,now(),now())");
+			pstmt.setString(1, req.getParameter("name"));
+			pstmt.setString(2, req.getParameter("email"));
+			pstmt.setString(3, req.getParameter("password"));
+			
+			pstmt.executeUpdate();
+			
+			PrintWriter writer = resp.getWriter();
+			writer.println("<html>");
+			writer.println("<head>");
+			writer.println("<title>회원 등록</title>");
+			writer.println("</head>");
+			writer.println("<body>");
+			writer.println("<h1>등록 성공입니다.</h1>");
+			writer.println("</body>");
+			writer.println("</html>");
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try{ if(pstmt != null){ pstmt.close();} }catch(Exception e){}
+			try{ if(conn != null){ conn.close();} }catch(Exception e){}
+		}
 		
 	}
 
