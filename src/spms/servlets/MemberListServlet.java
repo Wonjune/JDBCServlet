@@ -40,6 +40,7 @@ public class MemberListServlet extends GenericServlet {
 			writer.println("</head>");
 			writer.println("<body>");
 			writer.println("<h1>회원 목록</h1>");
+			writer.println("<p><a href='add'>신규 회원</a></p>");
 			while(rs.next()){
 				writer.println(rs.getInt("mno") + ", " + rs.getString("mname") + ", " + rs.getString("email") + ", " + rs.getString("cre_date") + "<br>");
 			}
