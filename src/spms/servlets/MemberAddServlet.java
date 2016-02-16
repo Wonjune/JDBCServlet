@@ -64,18 +64,7 @@ public class MemberAddServlet extends HttpServlet {
 			
 			pstmt.executeUpdate();
 			
-			PrintWriter writer = resp.getWriter();
-			writer.println("<html>");
-			writer.println("<head>");
-			writer.println("<title>회원 등록</title>");
-			writer.println("<meta http-equiv='Refresh' content='1; url=list'>");
-			writer.println("</head>");
-			writer.println("<body>");
-			writer.println("<h1>등록 성공입니다.</h1>");
-			writer.println("</body>");
-			writer.println("</html>");
-			
-//			resp.addHeader("Refresh", "1:url=list");
+			resp.sendRedirect("list");
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
