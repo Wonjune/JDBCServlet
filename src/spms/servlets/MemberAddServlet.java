@@ -73,6 +73,8 @@ public class MemberAddServlet extends HttpServlet {
 			writer.println("<h1>등록 성공입니다.</h1>");
 			writer.println("</body>");
 			writer.println("</html>");
+			
+			resp.addHeader("Refresh", "1:url=list");
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
