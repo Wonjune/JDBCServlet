@@ -10,11 +10,18 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/member/add")
+@WebServlet(urlPatterns = {"/member/add"},
+		initParams={
+			@WebInitParam(name="driver",value="com.mysql.jdbc.Driver"),
+			@WebInitParam(name="url",value="jdbc:mysql://localhost/studydb"),
+			@WebInitParam(name="username",value="study"),
+			@WebInitParam(name="password",value="study")
+})
 public class MemberAddServlet extends HttpServlet {
 
 	@Override
