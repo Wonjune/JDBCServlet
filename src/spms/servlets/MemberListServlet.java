@@ -28,14 +28,16 @@ public class MemberListServlet extends HttpServlet {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		int mno;
 		
 		try{
 			ServletContext sc = this.getServletContext();
+			
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"), sc.getInitParameter("password"));
 			pstmt = conn.prepareStatement("select mno, email, mname, cre_date from members order by mno asc");
 			rs = pstmt.executeQuery();
-			
+					
 			PrintWriter writer = response.getWriter();
 			writer.println("<html>");
 			writer.println("<head>");
@@ -45,7 +47,9 @@ public class MemberListServlet extends HttpServlet {
 			writer.println("<h1>회원 목록</h1>");
 			writer.println("<p><a href='add'>신규 회원</a></p>");
 			while(rs.next()){
-				writer.println(rs.getInt("mno") + ", <a href='update?no=" + rs.getInt("mno") + "' method='GET'>" + rs.getString("mname") + "</a>, " + rs.getString("email") + ", " + rs.getString("cre_date") + "<br>");
+				mno = rs.getInt("mno");
+				writer.println(mno + ", <a href='update?no=" + mno + "' method='GET'>" + rs.getString("mname") + "</a>, " + rs.getString("email") + ", " + rs.getString("cre_date") + 
+						" <a href='delete?no=" + mno + "' method='GET'>[삭제]</a><br>");
 			}
 			writer.println("</body>");
 			writer.println("</html>");
