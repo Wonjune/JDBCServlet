@@ -7,20 +7,21 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/member/list")
-public class MemberListServlet extends GenericServlet {
+public class MemberListServlet extends HttpServlet {
 
 	@Override
-	public void service(ServletRequest request, ServletResponse response)
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		response.setContentType("text/html;charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		
@@ -57,5 +58,4 @@ public class MemberListServlet extends GenericServlet {
 			try{ if(conn != null){ conn.close();} }catch(Exception e){}
 		}
 	}
-
 }
