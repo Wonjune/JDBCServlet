@@ -42,12 +42,13 @@ public class MemberUpdateServlet extends HttpServlet {
 			writer.println("<body>");
 			writer.println("<h1>회원 수정</h1>");
 			writer.println("<form action='update' method='post'>");
+			writer.println("번호 : <input type='text' name='no' value='" + no + "' readonly /><br>");
 			writer.println("이름 : <input type='text' name='name' value='" + rs.getString("mname") + "' /><br>");
 			writer.println("이메일 : <input type='text' name='email' value='" + rs.getString("email") + "'/><br>");
 			writer.println("비밀번호 : <input type='password' name='password' value='" + rs.getString("pwd") + "'/><br>");
 			writer.println("가입일 : " + rs.getString("cre_date") + "<br>");
 			writer.println("수정일 : " + rs.getString("mod_date") + "<br>");
-			writer.println("<input type='submit' value='수정'/> <input type='reset' value='취소'/>");
+			writer.println("<input type='submit' value='수정'/> <input type='button' value='취소' onclick='location.href='list'/>");
 			writer.println("</form>");
 			writer.println("</body>");
 			writer.println("</html>");
@@ -64,8 +65,32 @@ public class MemberUpdateServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doPost(req, resp);
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try{
+			req.setCharacterEncoding("UTF-8");
+			
+			Class.forName(this.getInitParameter("driver"));
+			conn = DriverManager.getConnection(this.getInitParameter("url"), this.getInitParameter("username"), this.getInitParameter("password"));
+			pstmt = conn.prepareStatement("update members set mname = ?, email = ?, pwd = ?, mod_date = now() where mno = ?");
+			pstmt.setString(1, req.getParameter("name"));
+			pstmt.setString(2, req.getParameter("email"));
+			pstmt.setString(3, req.getParameter("password"));
+			pstmt.setInt(4, Integer.parseInt(req.getParameter("no")));
+			pstmt.execute();
+			
+			resp.setContentType("text/html; charset=UTF-8");
+			
+			resp.sendRedirect("list");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
+			try{ if(conn != null){ conn.close(); }}catch(Exception e){}
+		}
 	}
 
 }
