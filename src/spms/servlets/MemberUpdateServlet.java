@@ -51,7 +51,7 @@ public class MemberUpdateServlet extends HttpServlet {
 			writer.println("비밀번호 : <input type='password' name='password' value='" + rs.getString("pwd") + "'/><br>");
 			writer.println("가입일 : " + rs.getString("cre_date") + "<br>");
 			writer.println("수정일 : " + rs.getString("mod_date") + "<br>");
-			writer.println("<input type='submit' value='수정'/> <input type='button' value='취소' onclick='location.href='list'/>");
+			writer.println("<input type='submit' value='수정'/> <input type='button' value='삭제' onclick='location.href=\"delete?no=" + no + "\"'/> <input type='button' value='취소' onclick='location.href=\"list\"'/>");
 			writer.println("</form>");
 			writer.println("</body>");
 			writer.println("</html>");
