@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -28,8 +29,9 @@ public class MemberListServlet extends GenericServlet {
 		ResultSet rs = null;
 		
 		try{
+			ServletContext sc = this.getServletContext();
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/studydb", "study", "study");
+			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"), sc.getInitParameter("password"));
 			pstmt = conn.prepareStatement("select mno, email, mname, cre_date from members order by mno asc");
 			rs = pstmt.executeQuery();
 			

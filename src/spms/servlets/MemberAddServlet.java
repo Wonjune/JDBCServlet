@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -15,13 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = {"/member/add"},
-		initParams={
-			@WebInitParam(name="driver",value="com.mysql.jdbc.Driver"),
-			@WebInitParam(name="url",value="jdbc:mysql://localhost/studydb"),
-			@WebInitParam(name="username",value="study"),
-			@WebInitParam(name="password",value="study")
-})
+@WebServlet(urlPatterns = {"/member/add"})
 public class MemberAddServlet extends HttpServlet {
 
 	@Override
@@ -60,9 +55,9 @@ public class MemberAddServlet extends HttpServlet {
 		try{
 			//request에서 getParameter 할 때 매개변수값의 인코딩을 디폴트로 ISO-8859-1로 인식하므로 UTF-8설정(하지 않으면 한글이 깨짐 발생)
 			req.setCharacterEncoding("UTF-8");
-			
+			ServletContext sc = this.getServletContext();
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/studydb", "study", "study");
+			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"), sc.getInitParameter("password"));
 			
 			pstmt = conn.prepareStatement("insert into members(mname, email, pwd, cre_date, mod_date) values (?,?,?,now(),now())");
 			pstmt.setString(1, req.getParameter("name"));
