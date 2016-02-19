@@ -73,8 +73,6 @@ public class MemberUpdateServlet extends HttpServlet {
 		PreparedStatement pstmt = null;
 		
 		try{
-			req.setCharacterEncoding("UTF-8");
-			
 			ServletContext sc = this.getServletContext();
 			Class.forName(sc.getInitParameter("driver"));
 			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"), sc.getInitParameter("password"));

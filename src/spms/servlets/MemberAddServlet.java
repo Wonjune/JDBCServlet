@@ -53,8 +53,6 @@ public class MemberAddServlet extends HttpServlet {
 		PreparedStatement pstmt = null;
 		
 		try{
-			//request에서 getParameter 할 때 매개변수값의 인코딩을 디폴트로 ISO-8859-1로 인식하므로 UTF-8설정(하지 않으면 한글이 깨짐 발생)
-			req.setCharacterEncoding("UTF-8");
 			ServletContext sc = this.getServletContext();
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"), sc.getInitParameter("password"));
