@@ -54,8 +54,7 @@ public class MemberAddServlet extends HttpServlet {
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"), sc.getInitParameter("password"));
+			conn = (Connection)sc.getAttribute("conn");
 			
 			pstmt = conn.prepareStatement("insert into members(mname, email, pwd, cre_date, mod_date) values (?,?,?,now(),now())");
 			pstmt.setString(1, req.getParameter("name"));
@@ -69,7 +68,6 @@ public class MemberAddServlet extends HttpServlet {
 			e.printStackTrace();
 		}finally{
 			try{ if(pstmt != null){ pstmt.close();} }catch(Exception e){}
-			try{ if(conn != null){ conn.close();} }catch(Exception e){}
 		}
 		
 	}

@@ -37,8 +37,7 @@ public class MemberListServlet extends HttpServlet {
 		try{
 			ServletContext sc = this.getServletContext();
 			
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"), sc.getInitParameter("password"));
+			conn = (Connection) sc.getAttribute("conn");
 			pstmt = conn.prepareStatement("select mno, email, mname, cre_date from members order by mno asc");
 			rs = pstmt.executeQuery();
 
@@ -58,7 +57,6 @@ public class MemberListServlet extends HttpServlet {
 		}finally{
 			try{ if(rs != null){ rs.close();} }catch(Exception e){}
 			try{ if(pstmt != null){ pstmt.close();} }catch(Exception e){}
-			try{ if(conn != null){ conn.close();} }catch(Exception e){}
 		}
 	}
 }
