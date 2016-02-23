@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
 		try{
 			ServletContext sc = this.getServletContext();
 			conn = (Connection)sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("select mname, email from members where email = ? and pwd = ?");
+			pstmt = conn.prepareStatement("select email, mname from members where email = ? and pwd = ?");
 			pstmt.setString(1, req.getParameter("email"));
 			pstmt.setString(2, req.getParameter("password"));
 			rs = pstmt.executeQuery();
