@@ -1,5 +1,5 @@
 ### JDBCServlet
-  - JDBC, Servlet 을 이용한 회원정보 조회, 로그인 기능 구현 
+  - JDBC, JSP, Servlet 을 이용한 회원정보 조회, 로그인 기능 구현 
 
 ### 수정이력
   - 2016.02.13
