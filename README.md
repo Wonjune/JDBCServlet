@@ -9,7 +9,7 @@
   - 2016.02.14
     * /member/list 에 신규 회원 등록 링크 추가(GET 방식으로 요청)
     * 신규 회원 등록 폼 및 등록 시 POST 방식으로 MySQL DB에 회원정보 insert 하는 기능 추가(/member/add)
-  - 2016.02.25
+  - 2016.02.15 ~ 2016.02.25
     * 회원 정보 처리를 위한 VO 파일(Member.java) 적용
     * 파라미터 값의 인코딩 설정(UTF-8)을 위한 Filter 기능 적용(CharacterEncodingFilter.java)
     * 회원 업데이트 페이지 및 기능 추가(MemberUpdateServlet.java)
