@@ -11,16 +11,6 @@
 <body>
 	<jsp:include page="/header.jsp"/>
 	<h1>회원 목록</h1>
-	<%
-	Member loginUser = (Member)session.getAttribute("member");
-	if(loginUser == null) {
-	%>
-	<p><a href='add'>신규 회원</a></p>
-	<%
-	}else{
-	%>
-	<p><%=loginUser.getName() %>님, 반갑습니다.</p>
-	<%} %>
 	<hr/>
 	<table border="1">
 	<%
