@@ -7,12 +7,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import spms.vo.Member;
 
 @WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
@@ -34,26 +37,19 @@ public class MemberUpdateServlet extends HttpServlet {
 			rs = pstmt.executeQuery();
 			rs.next();
 			
+
+			req.setAttribute("member", new Member()
+			.setNo(Integer.parseInt(no))
+			.setName(rs.getString(1))
+			.setEmail(rs.getString(2))
+			.setPassword(rs.getString(3))
+			.setCreateDate(rs.getString(4))
+			.setModifiedDate(rs.getString(5)));
+
 			resp.setContentType("text/html; charset=UTF-8");
 			
-			PrintWriter writer = resp.getWriter();
-			writer.println("<html>");
-			writer.println("<head>");
-			writer.println("<title>회원 수정</title>");
-			writer.println("</head>");
-			writer.println("<body>");
-			writer.println("<h1>회원 수정</h1>");
-			writer.println("<form action='update' method='post'>");
-			writer.println("번호 : <input type='text' name='no' value='" + no + "' readonly /><br>");
-			writer.println("이름 : <input type='text' name='name' value='" + rs.getString("mname") + "' /><br>");
-			writer.println("이메일 : <input type='text' name='email' value='" + rs.getString("email") + "'/><br>");
-			writer.println("비밀번호 : <input type='password' name='password' value='" + rs.getString("pwd") + "'/><br>");
-			writer.println("가입일 : " + rs.getString("cre_date") + "<br>");
-			writer.println("수정일 : " + rs.getString("mod_date") + "<br>");
-			writer.println("<input type='submit' value='수정'/> <input type='button' value='삭제' onclick='location.href=\"delete?no=" + no + "\"'/> <input type='button' value='취소' onclick='location.href=\"list\"'/>");
-			writer.println("</form>");
-			writer.println("</body>");
-			writer.println("</html>");
+			RequestDispatcher rd = req.getRequestDispatcher("/member/MemberUpdateForm.jsp");
+			rd.include(req, resp);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -85,7 +81,9 @@ public class MemberUpdateServlet extends HttpServlet {
 			resp.sendRedirect("list");
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			req.setAttribute("error", e);
+			RequestDispatcher rd = req.getRequestDispatcher("Error.jsp");
+			rd.forward(req, resp);
 		}finally{
 			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
 		}
