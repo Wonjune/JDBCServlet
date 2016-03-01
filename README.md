@@ -20,3 +20,7 @@
     * 로그인 처리 서블릿 추가, 로그인 시 HttpSession에 로그인 정보 입력로직 적용(LoginServlet.java)
     * 로그아웃 기능 추가, 로그아웃 시 session 에 설정된 데이터 invalidate 수행(LogoutServlet.java)
     * MemberList.jsp 페이지에 header, tail 페이지를 include 하고 header 페이지에는 로그인 정보 출력과 로그인/로그아웃 버튼 추가
+  - 2016.02.28
+    * 멤버 신규 입력, 기존 멤버 수정 기능의 View를 별도의 JSP (MemberForm.jsp, MemberFormUpdate.jsp) 로 이관
+    * MemberAddServlet, MemberUpdateServlet 에서 뷰 생성 부분 삭제, Exception 처리시 Error.jsp 페이지로 포워딩 추가
+    * Header.jsp, MemberList.jsp 페이지에 JSP 액션 태그 (<jsp:useBean>) 적용
