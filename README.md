@@ -24,3 +24,5 @@
     * 멤버 신규 입력, 기존 멤버 수정 기능의 View를 별도의 JSP (MemberForm.jsp, MemberFormUpdate.jsp) 로 이관
     * MemberAddServlet, MemberUpdateServlet 에서 뷰 생성 부분 삭제, Exception 처리시 Error.jsp 페이지로 포워딩 추가
     * Header.jsp, MemberList.jsp 페이지에 JSP 액션 태그 (<jsp:useBean>) 적용
+  - 2016.03.01
+    * MemberUpdateForm.jsp : JSP 액션 태그 삭제 후 EL 표현식 적용
