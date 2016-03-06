@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import spms.dao.MemberDao;
 import spms.vo.Member;
 
 @WebServlet("/member/list")
@@ -38,13 +39,10 @@ public class MemberListServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			
 			conn = (Connection) sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("select mno, email, mname, cre_date from members order by mno asc");
-			rs = pstmt.executeQuery();
-
-			ArrayList<Member> members = new ArrayList<Member>();
-			while(rs.next()){
-				members.add(new Member().setNo(rs.getInt("mno")).setName(rs.getString("mname")).setEmail(rs.getString("email")).setCreateDate(rs.getString("cre_date")));
-			}
+			MemberDao dao = new MemberDao();
+			dao.setConnection(conn);
+			ArrayList<Member> members = dao.selectList();
+			
 			request.setAttribute("members", members);
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
