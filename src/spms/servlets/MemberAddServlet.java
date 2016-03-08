@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import spms.dao.MemberDao;
+import spms.vo.Member;
+
 @WebServlet(urlPatterns = {"/member/add"})
 public class MemberAddServlet extends HttpServlet {
 
@@ -32,30 +35,21 @@ public class MemberAddServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
 		resp.setContentType("text/html; charset=UTF-8");
-		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
 		
 		try{
 			ServletContext sc = this.getServletContext();
 			conn = (Connection)sc.getAttribute("conn");
 			
-			pstmt = conn.prepareStatement("insert into members(mname, email, pwd, cre_date, mod_date) values (?,?,?,now(),now())");
-			pstmt.setString(1, req.getParameter("name"));
-			pstmt.setString(2, req.getParameter("email"));
-			pstmt.setString(3, req.getParameter("password"));
-			
-			pstmt.executeUpdate();
-			
+			MemberDao dao = new MemberDao();
+			dao.setConnection(conn);
+			dao.insert(new Member().setName(req.getParameter("name")).setEmail(req.getParameter("email")).setPassword(req.getParameter("password")));
 			resp.sendRedirect("list");
 		}catch(Exception e){
 			req.setAttribute("error", e);
 			RequestDispatcher rd = req.getRequestDispatcher("Error.jsp");
 			rd.forward(req, resp);
-		}finally{
-			try{ if(pstmt != null){ pstmt.close();} }catch(Exception e){}
 		}
 		
 	}

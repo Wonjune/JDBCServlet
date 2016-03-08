@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import spms.dao.MemberDao;
 import spms.vo.Member;
 
 @WebServlet("/member/update")
@@ -23,29 +24,18 @@ public class MemberUpdateServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String no = req.getParameter("no");
-		
+		String no = req.getParameter("no");		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try{
 			ServletContext sc = this.getServletContext();
 			conn = (Connection)sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("select mname, email, pwd, cre_date, mod_date from members where mno = ?");
-			pstmt.setInt(1, Integer.parseInt(no));
-			rs = pstmt.executeQuery();
-			rs.next();
 			
-
-			req.setAttribute("member", new Member()
-			.setNo(Integer.parseInt(no))
-			.setName(rs.getString(1))
-			.setEmail(rs.getString(2))
-			.setPassword(rs.getString(3))
-			.setCreateDate(rs.getString(4))
-			.setModifiedDate(rs.getString(5)));
-
+			MemberDao dao = new MemberDao();
+			dao.setConnection(conn);
+			Member member = dao.selectOne(Integer.parseInt(no));
+			
+			req.setAttribute("member", member);
 			resp.setContentType("text/html; charset=UTF-8");
 			
 			RequestDispatcher rd = req.getRequestDispatcher("/member/MemberUpdateForm.jsp");
@@ -53,9 +43,6 @@ public class MemberUpdateServlet extends HttpServlet {
 			
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			try{ if(rs != null){ rs.close(); }}catch(Exception e){}
-			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
 		}
 	}
 
@@ -64,18 +51,18 @@ public class MemberUpdateServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
 		
 		try{
 			ServletContext sc = this.getServletContext();
 			conn = (Connection)sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("update members set mname = ?, email = ?, pwd = ?, mod_date = now() where mno = ?");
-			pstmt.setString(1, req.getParameter("name"));
-			pstmt.setString(2, req.getParameter("email"));
-			pstmt.setString(3, req.getParameter("password"));
-			pstmt.setInt(4, Integer.parseInt(req.getParameter("no")));
-			pstmt.execute();
 			
+			MemberDao dao = new MemberDao();
+			dao.setConnection(conn);
+			int result = dao.update(new Member()
+				.setName(req.getParameter("name"))
+				.setEmail(req.getParameter("email"))
+				.setPassword(req.getParameter("password"))
+				.setNo(Integer.parseInt(req.getParameter("no"))));
 			resp.setContentType("text/html; charset=UTF-8");
 			
 			resp.sendRedirect("list");
@@ -84,8 +71,6 @@ public class MemberUpdateServlet extends HttpServlet {
 			req.setAttribute("error", e);
 			RequestDispatcher rd = req.getRequestDispatcher("Error.jsp");
 			rd.forward(req, resp);
-		}finally{
-			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
 		}
 	}
 

@@ -52,9 +52,6 @@ public class MemberListServlet extends HttpServlet {
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-		}finally{
-			try{ if(rs != null){ rs.close();} }catch(Exception e){}
-			try{ if(pstmt != null){ pstmt.close();} }catch(Exception e){}
 		}
 	}
 }
