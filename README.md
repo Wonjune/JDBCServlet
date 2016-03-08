@@ -26,3 +26,7 @@
     * Header.jsp, MemberList.jsp 페이지에 JSP 액션 태그 (<jsp:useBean>) 적용
   - 2016.03.01
     * MemberUpdateForm.jsp : JSP 액션 태그 삭제 후 EL 표현식 적용
+  - 2016.03.06
+    * MemberDao.java : DAO 로직 신규 적용, 우선 list 조회만
+  - 2016.03.08
+    * MemberDao.java : 유저 수정(update), 상세조회(selectOne) 기능 추가 
