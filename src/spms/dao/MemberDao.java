@@ -98,4 +98,17 @@ public class MemberDao{
 			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
 		}
 	}
+	
+	public int delete(int no) throws Exception {
+		try{
+			pstmt = conn.prepareStatement("delete from members where mno = ?");
+			pstmt.setInt(1, no);
+			return pstmt.executeUpdate();
+		}catch(Exception e){
+			System.out.println("insert 에러");
+			throw e;
+		}finally{
+			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
+		}
+	}
 }

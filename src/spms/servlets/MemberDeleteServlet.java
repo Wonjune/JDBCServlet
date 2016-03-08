@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import spms.dao.MemberDao;
+
 @WebServlet("/member/delete")
 public class MemberDeleteServlet extends HttpServlet {
 
@@ -29,14 +31,16 @@ public class MemberDeleteServlet extends HttpServlet {
 			pstmt.setInt(1, Integer.parseInt(req.getParameter("no")));
 			pstmt.executeUpdate();
 			
+			MemberDao dao = new MemberDao();
+			dao.setConnection(conn);
+			int result = dao.delete(Integer.parseInt(req.getParameter("no")));
+			if(result != 0) throw new Exception();
 			resp.sendRedirect("list");
 			
 		}catch(Exception e){
 			req.setAttribute("error", e);
-			RequestDispatcher rd = req.getRequestDispatcher("Error.jsp");
+			RequestDispatcher rd = req.getRequestDispatcher("/Error.jsp");
 			rd.forward(req, resp);
-		}finally{
-			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
 		}
 	}
 
