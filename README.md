@@ -30,3 +30,5 @@
     * MemberDao.java : DAO 로직 신규 적용, 우선 list 조회만
   - 2016.03.08
     * MemberDao.java : 유저 수정(update), 상세조회(selectOne) 기능 추가 
+  - 2016.03.09
+    * MemberDao.java : 유저삭제(delete), 로그인을 위한 유저조회(exist) 기능 추가
