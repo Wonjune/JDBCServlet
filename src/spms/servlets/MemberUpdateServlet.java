@@ -25,14 +25,12 @@ public class MemberUpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String no = req.getParameter("no");		
-		Connection conn = null;
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");
 			
 			MemberDao dao = new MemberDao();
-			dao.setConnection(conn);
+			dao.setConnection((Connection)sc.getAttribute("conn"));
 			Member member = dao.selectOne(Integer.parseInt(no));
 			
 			req.setAttribute("member", member);
@@ -50,14 +48,11 @@ public class MemberUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		Connection conn = null;
-		
 		try{
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");
 			
 			MemberDao dao = new MemberDao();
-			dao.setConnection(conn);
+			dao.setConnection((Connection)sc.getAttribute("conn"));
 			int result = dao.update(new Member()
 				.setName(req.getParameter("name"))
 				.setEmail(req.getParameter("email"))

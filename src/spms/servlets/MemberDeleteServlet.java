@@ -21,18 +21,12 @@ public class MemberDeleteServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("delete from members where mno = ?");
-			pstmt.setInt(1, Integer.parseInt(req.getParameter("no")));
-			pstmt.executeUpdate();
 			
 			MemberDao dao = new MemberDao();
-			dao.setConnection(conn);
+			dao.setConnection((Connection)sc.getAttribute("conn"));
 			int result = dao.delete(Integer.parseInt(req.getParameter("no")));
 			if(result != 0) throw new Exception();
 			resp.sendRedirect("list");

@@ -30,17 +30,10 @@ public class MemberListServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		int mno;
-		
 		try{
 			ServletContext sc = this.getServletContext();
-			
-			conn = (Connection) sc.getAttribute("conn");
 			MemberDao dao = new MemberDao();
-			dao.setConnection(conn);
+			dao.setConnection((Connection)sc.getAttribute("conn"));
 			ArrayList<Member> members = dao.selectList();
 			
 			request.setAttribute("members", members);
