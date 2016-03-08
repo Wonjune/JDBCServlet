@@ -76,7 +76,7 @@ public class MemberDao{
 				return new Member();
 			}
 		}catch(Exception e){
-			System.out.println("insert 에러");
+			System.out.println("selectone 에러");
 			throw e;
 		}finally{
 			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
@@ -92,7 +92,7 @@ public class MemberDao{
 			pstmt.setInt(4, member.getNo());
 			return pstmt.executeUpdate();
 		}catch(Exception e){
-			System.out.println("insert 에러");
+			System.out.println("update 에러");
 			throw e;
 		}finally{
 			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
@@ -105,7 +105,27 @@ public class MemberDao{
 			pstmt.setInt(1, no);
 			return pstmt.executeUpdate();
 		}catch(Exception e){
-			System.out.println("insert 에러");
+			System.out.println("delete 에러");
+			throw e;
+		}finally{
+			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}
+		}
+	}
+	
+	public Member exist(String email, String password) throws Exception {
+		try{
+			pstmt = conn.prepareStatement("select email, mname from members where email = ? and pwd = ?");
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+				return new Member().setEmail(rs.getString("email")).setName(rs.getString("mname"));
+			}else{
+				return null;
+			}
+		}catch(Exception e){
+			System.out.println("exist 에러");
 			throw e;
 		}finally{
 			try{ if(pstmt != null){ pstmt.close(); }}catch(Exception e){}

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import java.sql.*;
 
+import spms.dao.MemberDao;
 import spms.vo.Member;
 
 @WebServlet("/auth/login")
@@ -35,20 +36,14 @@ public class LoginServlet extends HttpServlet {
 		resp.setContentType("text/html; charset=UTF-8");
 		
 		Member member = new Member();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");
-			pstmt = conn.prepareStatement("select email, mname from members where email = ? and pwd = ?");
-			pstmt.setString(1, req.getParameter("email"));
-			pstmt.setString(2, req.getParameter("password"));
-			rs = pstmt.executeQuery();
+			MemberDao dao = new MemberDao();
+			dao.setConnection((Connection)sc.getAttribute("conn"));
+			member = dao.exist(req.getParameter("email"), req.getParameter("password"));
 			
-			if(rs.next()){
-				member.setEmail(rs.getString(1)).setName(rs.getString(2));
+			if(member != null){
 				HttpSession session = req.getSession();
 				session.setAttribute("member", member);
 				resp.sendRedirect("../member/list");
@@ -61,11 +56,6 @@ public class LoginServlet extends HttpServlet {
 			req.setAttribute("error", e);
 			RequestDispatcher rd = req.getRequestDispatcher("/error.jsp");
 			rd.forward(req, resp);
-		}finally{
-			try{ if(rs != null) rs.close(); }catch(Exception e){}
-			try{ if(pstmt != null) pstmt.close(); }catch(Exception e){}
 		}
-		
 	}
-
 }
