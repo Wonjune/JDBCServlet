@@ -40,10 +40,7 @@ public class MemberAddServlet extends HttpServlet {
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");
-			
-			MemberDao dao = new MemberDao();
-			dao.setConnection(conn);
+			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
 			dao.insert(new Member().setName(req.getParameter("name")).setEmail(req.getParameter("email")).setPassword(req.getParameter("password")));
 			resp.sendRedirect("list");
 		}catch(Exception e){

@@ -32,17 +32,15 @@ public class MemberListServlet extends HttpServlet {
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			MemberDao dao = new MemberDao();
-			dao.setConnection((Connection)sc.getAttribute("conn"));
+			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
 			ArrayList<Member> members = dao.selectList();
-			
 			request.setAttribute("members", members);
-			
 			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
 			rd.include(request, response);
 			
 		}catch(Exception e){
 			request.setAttribute("error", e);
+			e.printStackTrace();
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
 		}

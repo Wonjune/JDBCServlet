@@ -39,8 +39,7 @@ public class LoginServlet extends HttpServlet {
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			MemberDao dao = new MemberDao();
-			dao.setConnection((Connection)sc.getAttribute("conn"));
+			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
 			member = dao.exist(req.getParameter("email"), req.getParameter("password"));
 			
 			if(member != null){

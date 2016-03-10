@@ -29,8 +29,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		try{
 			ServletContext sc = this.getServletContext();
 			
-			MemberDao dao = new MemberDao();
-			dao.setConnection((Connection)sc.getAttribute("conn"));
+			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
 			Member member = dao.selectOne(Integer.parseInt(no));
 			
 			req.setAttribute("member", member);
@@ -50,9 +49,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		
 		try{
 			ServletContext sc = this.getServletContext();
-			
-			MemberDao dao = new MemberDao();
-			dao.setConnection((Connection)sc.getAttribute("conn"));
+			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
 			int result = dao.update(new Member()
 				.setName(req.getParameter("name"))
 				.setEmail(req.getParameter("email"))

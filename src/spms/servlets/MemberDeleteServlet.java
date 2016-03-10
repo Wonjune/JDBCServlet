@@ -25,10 +25,9 @@ public class MemberDeleteServlet extends HttpServlet {
 		try{
 			ServletContext sc = this.getServletContext();
 			
-			MemberDao dao = new MemberDao();
-			dao.setConnection((Connection)sc.getAttribute("conn"));
+			MemberDao dao = (MemberDao)sc.getAttribute("memberDao");
 			int result = dao.delete(Integer.parseInt(req.getParameter("no")));
-			if(result != 0) throw new Exception();
+			if(result == 0) throw new Exception();
 			resp.sendRedirect("list");
 			
 		}catch(Exception e){
